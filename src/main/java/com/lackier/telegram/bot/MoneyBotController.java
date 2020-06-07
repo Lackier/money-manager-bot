@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.User;
 
 @RestController
 public class MoneyBotController {
@@ -15,9 +16,16 @@ public class MoneyBotController {
     private MoneyBot moneyBot;
     @Autowired
     private MenuBuilderService menuBuilderService;
+    @Autowired
+    private BotStateService botStateService;
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public BotApiMethod<?> onUpdateReceived(@RequestBody Update update) {
+        User user = update.getMessage().getFrom();
+        if (botStateService.getState(user) == null) {
+            botStateService.setState(user, BotState.MENU);
+        }
+
         SendMessage sendMessage = (SendMessage) moneyBot.onWebhookUpdateReceived(update);
         sendMessage.setReplyMarkup(menuBuilderService.getMainMenu());
         return sendMessage;
