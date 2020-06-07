@@ -1,4 +1,4 @@
-package com.lackier.telegram;
+package com.lackier.telegram.config;
 
 import com.lackier.telegram.bot.MoneyBot;
 import org.springframework.beans.factory.annotation.Value;
