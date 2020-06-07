@@ -1,8 +1,6 @@
 package com.lackier.telegram.bot;
 
 import org.springframework.stereotype.Service;
-import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 
@@ -11,7 +9,7 @@ import java.util.List;
 
 @Service
 public class MenuBuilderService {
-    public BotApiMethod<?> getMainMenu(SendMessage sendMessage) {
+    public ReplyKeyboardMarkup getMainMenu() {
         ReplyKeyboardMarkup replyKeyboard = new ReplyKeyboardMarkup();
 
         List<String> mainMenu = new ArrayList<>();
@@ -30,7 +28,6 @@ public class MenuBuilderService {
         });
 
         replyKeyboard.setKeyboard(keyboardRows);
-        sendMessage.setReplyMarkup(replyKeyboard);
-        return sendMessage;
+        return replyKeyboard;
     }
 }

@@ -19,6 +19,7 @@ public class MoneyBotController {
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public BotApiMethod<?> onUpdateReceived(@RequestBody Update update) {
         SendMessage sendMessage = (SendMessage) moneyBot.onWebhookUpdateReceived(update);
-        return menuBuilderService.getMainMenu(sendMessage);
+        sendMessage.setReplyMarkup(menuBuilderService.getMainMenu());
+        return sendMessage;
     }
 }
