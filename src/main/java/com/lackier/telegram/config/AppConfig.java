@@ -4,10 +4,12 @@ import com.lackier.telegram.bot.MoneyBot;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.meta.ApiContext;
 
 @Configuration
+@PropertySource("classpath:application.properties")
 public class AppConfig {
     @Value("${bot.token}")
     private String botToken;
