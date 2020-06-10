@@ -1,5 +1,9 @@
-package com.lackier.telegram.bot;
+package com.lackier.telegram.controller;
 
+import com.lackier.telegram.bot.BotState;
+import com.lackier.telegram.bot.MoneyBot;
+import com.lackier.telegram.service.BotStateService;
+import com.lackier.telegram.service.MenuBuilderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -1,19 +1,16 @@
-package com.lackier.telegram.entity;
+package com.lackier.telegram.api.entity;
 
 import lombok.Data;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "telegram_user")
+@Table(name = "operation_type")
 @Data
-public class TelegramUser {
+public class OperationType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
-
-    @Column(name = "telegram_user_id")
-    Integer userId;
 
     @Column(name = "name")
     String name;

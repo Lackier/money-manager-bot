@@ -1,5 +1,6 @@
-package com.lackier.telegram.bot;
+package com.lackier.telegram.service;
 
+import com.lackier.telegram.bot.BotState;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.User;
 

@@ -1,4 +1,4 @@
-package com.lackier.telegram.bot;
+package com.lackier.telegram.service;
 
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;

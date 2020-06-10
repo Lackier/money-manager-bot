@@ -1,4 +1,4 @@
-package com.lackier.telegram.entity;
+package com.lackier.telegram.api.entity;
 
 import lombok.Data;
 
