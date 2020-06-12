@@ -10,9 +10,20 @@ import java.util.HashMap;
 public class BotStateService {
     private HashMap<User, BotState> stateHashMap = new HashMap<>();
 
+    private static final BotState defaultBotState = BotState.MENU;
+
     public BotState getState(User user) {
         if (!stateHashMap.containsKey(user)) {
             return null;
+        }
+
+        return stateHashMap.get(user);
+    }
+
+    public BotState getStateOrDefault(User user) {
+        if (!stateHashMap.containsKey(user)) {
+            stateHashMap.put(user, defaultBotState);
+            return stateHashMap.get(user);
         }
 
         return stateHashMap.get(user);
