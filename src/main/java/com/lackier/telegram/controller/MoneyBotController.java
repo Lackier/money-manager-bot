@@ -31,7 +31,7 @@ public class MoneyBotController {
                 case ("groups"):
                     botStateService.setState(user, BotState.GROUPS);
                     break;
-                case ("to main menu"):
+                case ("toMainMenu"):
                     botStateService.setState(user, BotState.MENU);
                     break;
             }
@@ -50,7 +50,7 @@ public class MoneyBotController {
             case INCOMES:
                 break;
             case GROUPS:
-                sendMessage.setReplyMarkup(menuBuilderService.getGroupMenu());
+                sendMessage.setReplyMarkup(menuBuilderService.getGroupListMenu());
                 break;
             case STATISTICS:
                 break;

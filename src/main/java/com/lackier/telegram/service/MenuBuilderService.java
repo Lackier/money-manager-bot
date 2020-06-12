@@ -1,64 +1,71 @@
 package com.lackier.telegram.service;
 
+import org.apache.commons.io.IOUtils;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class MenuBuilderService {
+    private static final String mainMenuTemplateFile = "templates/main_menu.template.json";
+    private static final String groupListMenuTemplateFile = "templates/groupList_menu.template.json";
+
     public InlineKeyboardMarkup getMainMenu() {
+        return getKeyboard(getMenu(mainMenuTemplateFile));
+    }
+
+    public InlineKeyboardMarkup getGroupListMenu() {
+        return getKeyboard(getMenu(groupListMenuTemplateFile));
+    }
+
+    private InlineKeyboardMarkup getKeyboard(JSONObject jsonObject) {
+        JSONArray rows = jsonObject.getJSONArray("rows");
         List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
 
-        InlineKeyboardButton button1 = new InlineKeyboardButton("Income");
-        InlineKeyboardButton button2 = new InlineKeyboardButton("Expense");
-        InlineKeyboardButton button3 = new InlineKeyboardButton("Groups");
-        InlineKeyboardButton button4 = new InlineKeyboardButton("Statistics");
-        InlineKeyboardButton button5 = new InlineKeyboardButton("Settings");
-
-        button1.setCallbackData("Income".toLowerCase());
-        button2.setCallbackData("Expense".toLowerCase());
-        button3.setCallbackData("Groups".toLowerCase());
-        button4.setCallbackData("Statistics".toLowerCase());
-        button4.setCallbackData("Settings".toLowerCase());
-
-        List<InlineKeyboardButton> keyboardRow1 = new ArrayList<>();
-        keyboardRow1.add(button1);
-        keyboardRow1.add(button2);
-        keyboardRow1.add(button3);
-        keyboardRow1.add(button4);
-        keyboardRow1.add(button5);
-        keyboard.add(keyboardRow1);
+        for (int i = 0; i < rows.length(); i++) {
+            JSONObject rowObj = rows.getJSONObject(i);
+            keyboard.add(getKeyboardRow(rowObj));
+        }
 
         return new InlineKeyboardMarkup(keyboard);
     }
 
-    public ReplyKeyboard getGroupMenu() {
-        List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
+    private List<InlineKeyboardButton> getKeyboardRow(JSONObject rowObj) {
+        List<InlineKeyboardButton> keyboardRow = new ArrayList<>();
 
-        InlineKeyboardButton button1 = new InlineKeyboardButton("Add");
-        InlineKeyboardButton button2 = new InlineKeyboardButton("Edit");
-        InlineKeyboardButton button3 = new InlineKeyboardButton("Delete");
-        InlineKeyboardButton button4 = new InlineKeyboardButton("To main menu");
+        JSONArray row = rowObj.getJSONArray("buttons");
 
-        button1.setCallbackData("Add".toLowerCase());
-        button2.setCallbackData("Edit".toLowerCase());
-        button3.setCallbackData("Delete".toLowerCase());
-        button4.setCallbackData("To main menu".toLowerCase());
+        for (int i = 0; i < row.length(); i++) {
+            keyboardRow.add(getKeyboardButton(row.getJSONObject(i)));
+        }
 
-        List<InlineKeyboardButton> keyboardRow1 = new ArrayList<>();
-        keyboardRow1.add(button1);
-        keyboardRow1.add(button2);
-        keyboardRow1.add(button3);
-        keyboard.add(keyboardRow1);
+        return keyboardRow;
+    }
 
-        List<InlineKeyboardButton> keyboardRow2 = new ArrayList<>();
-        keyboardRow2.add(button4);
-        keyboard.add(keyboardRow2);
+    private InlineKeyboardButton getKeyboardButton(JSONObject buttonObj) {
+        InlineKeyboardButton keyboardButton = new InlineKeyboardButton();
 
-        return new InlineKeyboardMarkup(keyboard);
+        keyboardButton.setText(buttonObj.getString("text"));
+        keyboardButton.setCallbackData(buttonObj.getString("callbackData"));
+
+        return keyboardButton;
+    }
+
+    private JSONObject getMenu(String templateFileName) {
+        try {
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream(templateFileName);
+            assert inputStream != null;
+            String result = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
+            return new JSONObject(result);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Error during parsing " + templateFileName + " file", e);
+        }
     }
 }
