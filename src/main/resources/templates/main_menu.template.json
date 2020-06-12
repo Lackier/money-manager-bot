@@ -1,0 +1,30 @@
+{
+    "name" : "Main menu",
+    "rows" : [
+        {
+            "buttons" : [
+                {"text" : "Income", "callbackData" : "income"}
+            ]
+        },
+        {
+            "buttons" : [
+                {"text" : "Expense", "callbackData" : "expense"}
+            ]
+        },
+        {
+            "buttons" : [
+                {"text" : "Groups", "callbackData" : "groups"}
+            ]
+        },
+        {
+            "buttons" : [
+                {"text" : "Statistics", "callbackData" : "statistics"}
+            ]
+        },
+        {
+            "buttons" : [
+                {"text" : "Settings", "callbackData" : "settings"}
+            ]
+        }
+    ]
+}

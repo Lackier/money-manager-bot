@@ -1,0 +1,17 @@
+{
+  "name" : "Groups menu",
+  "rows" : [
+    {
+      "buttons" : [
+        {"text" : "Add", "callbackData" : "add"},
+        {"text" : "Edit", "callbackData" : "edit"},
+        {"text" : "Delete", "callbackData" : "delete"}
+      ]
+    },
+    {
+      "buttons" : [
+        {"text" : "To main menu", "callbackData" : "toMainMenu"}
+      ]
+    }
+  ]
+}
