@@ -1,5 +1,6 @@
 package com.lackier.telegram.controller;
 
+import com.lackier.telegram.api.service.TelegramUserService;
 import com.lackier.telegram.bot.BotState;
 import com.lackier.telegram.service.BotStateService;
 import com.lackier.telegram.service.MenuBuilderService;
@@ -19,6 +20,8 @@ public class MoneyBotController {
     private MenuBuilderService menuBuilderService;
     @Autowired
     private BotStateService botStateService;
+    @Autowired
+    private TelegramUserService telegramUserService;
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public BotApiMethod<?> onUpdateReceived(@RequestBody Update update) {
@@ -26,12 +29,35 @@ public class MoneyBotController {
                 ? update.getCallbackQuery().getMessage().getFrom()
                 : update.getMessage().getFrom();
 
+        if (!telegramUserService.existsUser(user.getId())) {
+            telegramUserService.addUser(user);
+        }
+
         if (update.hasCallbackQuery()) {
             switch (update.getCallbackQuery().getData()) {
-                case ("groups"):
+                case "/start":
+                    botStateService.setState(user, BotState.START);
+                    break;
+                case "/income":
+                    botStateService.setState(user, BotState.INCOMES);
+                    break;
+                case "/expense":
+                    botStateService.setState(user, BotState.EXPENSES);
+                    break;
+                case "/groups":
                     botStateService.setState(user, BotState.GROUPS);
                     break;
-                case ("toMainMenu"):
+                case "/toMainMenu":
+                case "/menu":
+                    botStateService.setState(user, BotState.MENU);
+                    break;
+            }
+        } else {
+            switch (update.getMessage().getText()) {
+                case "/start":
+                    botStateService.setState(user, BotState.START);
+                    break;
+                case "/menu":
                     botStateService.setState(user, BotState.MENU);
                     break;
             }
@@ -39,29 +65,33 @@ public class MoneyBotController {
 
         SendMessage sendMessage = new SendMessage();
 
-        switch (botStateService.getStateOrDefault(user)) {
+        sendMessage.setChatId(update.hasCallbackQuery()
+                ? update.getCallbackQuery().getMessage().getChatId()
+                : update.getMessage().getChatId());
+        sendMessage.setText("Choose the action:");
+
+        switch (botStateService.getState(user)) {
+            case START:
+                sendMessage.setText(
+                        "Hello, " +  telegramUserService.getUserName(user.getId()) + ". " +
+                        "Welcome to the app, to start using the bot, enter /menu");
+                break;
             case MENU:
                 sendMessage.setReplyMarkup(menuBuilderService.getMainMenu());
                 break;
-            case SETTINGS:
+            case INCOMES:
+                sendMessage.setReplyMarkup(menuBuilderService.getIncomeListMenu());
                 break;
             case EXPENSES:
-                break;
-            case INCOMES:
+                sendMessage.setReplyMarkup(menuBuilderService.getExpenseListMenu());
                 break;
             case GROUPS:
                 sendMessage.setReplyMarkup(menuBuilderService.getGroupListMenu());
                 break;
             case STATISTICS:
+            case SETTINGS:
                 break;
         }
-
-        if (update.hasCallbackQuery()) {
-            sendMessage.setChatId(update.getCallbackQuery().getMessage().getChatId());
-        } else {
-            sendMessage.setChatId(update.getMessage().getChatId());
-        }
-        sendMessage.setText("Menu");
 
         return sendMessage;
     }
