@@ -3,27 +3,27 @@
     "rows" : [
         {
             "buttons" : [
-                {"text" : "Income", "callbackData" : "income"}
+                {"text" : "Income", "callbackData" : "/income"}
             ]
         },
         {
             "buttons" : [
-                {"text" : "Expense", "callbackData" : "expense"}
+                {"text" : "Expense", "callbackData" : "/expense"}
             ]
         },
         {
             "buttons" : [
-                {"text" : "Groups", "callbackData" : "groups"}
+                {"text" : "Groups", "callbackData" : "/groups"}
             ]
         },
         {
             "buttons" : [
-                {"text" : "Statistics", "callbackData" : "statistics"}
+                {"text" : "Statistics", "callbackData" : "/statistics"}
             ]
         },
         {
             "buttons" : [
-                {"text" : "Settings", "callbackData" : "settings"}
+                {"text" : "Settings", "callbackData" : "/settings"}
             ]
         }
     ]
