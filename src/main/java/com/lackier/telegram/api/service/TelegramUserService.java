@@ -38,4 +38,13 @@ public class TelegramUserService {
                 .getResultList();
         return userNames.isEmpty() ? null : userNames.get(0);
     }
+
+    public TelegramUser getTelegramUserByUserId(Integer userId) {
+        List<Integer> users = entityManager.createQuery(
+                "select tu.id from TelegramUser tu " +
+                        "where tu.userId = :userId")
+                .setParameter("userId", userId)
+                .getResultList();
+        return users.isEmpty() ? null : entityManager.getReference(TelegramUser.class, users.get(0));
+    }
 }

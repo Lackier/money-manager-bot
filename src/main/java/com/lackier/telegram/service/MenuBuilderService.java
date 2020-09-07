@@ -5,7 +5,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
 import java.io.InputStream;
@@ -24,11 +23,11 @@ public class MenuBuilderService {
         return getKeyboard(getMenu(mainMenuTemplateFile));
     }
 
-    public ReplyKeyboard getIncomeListMenu() {
+    public InlineKeyboardMarkup getIncomeListMenu() {
         return getKeyboard(getMenu(incomeListMenuTemplateFile));
     }
 
-    public ReplyKeyboard getExpenseListMenu() {
+    public InlineKeyboardMarkup getExpenseListMenu() {
         return getKeyboard(getMenu(expenseListMenuTemplateFile));
     }
 
