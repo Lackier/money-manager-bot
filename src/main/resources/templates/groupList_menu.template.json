@@ -3,9 +3,9 @@
   "rows" : [
     {
       "buttons" : [
-        {"text" : "Add", "callbackData" : "/add"},
-        {"text" : "Edit", "callbackData" : "/edit"},
-        {"text" : "Delete", "callbackData" : "/delete"}
+        {"text" : "Add", "callbackData" : "/groups/add"},
+        {"text" : "Edit", "callbackData" : "/groups/edit"},
+        {"text" : "Delete", "callbackData" : "/groups/delete"}
       ]
     },
     {
